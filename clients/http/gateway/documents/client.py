@@ -58,7 +58,7 @@ class DocumentsGatewayHTTPClient(HTTPClient):
         Выполняет запрос к API, извлекает JSON-ответ и возвращает его в виде TypedDict-структуры.
 
         :param account_id: Идентификатор счёта.
-        :return: JSON-ответ с данными тарифа (например, {"tariff": {"url": "...", "document": "..."}}).
+        :return: JSON-ответ с данными тарифа (GetTariffDocumentResponseDict).
         """
         response = self.get_tariff_document_api(account_id)
         return response.json()
@@ -70,7 +70,7 @@ class DocumentsGatewayHTTPClient(HTTPClient):
         Выполняет запрос к API, извлекает JSON-ответ и возвращает его в виде TypedDict-структуры.
 
         :param account_id: Идентификатор счёта.
-        :return: JSON-ответ с данными контракта (например, {"contract": {"url": "...", "document": "..."}}).
+        :return: JSON-ответ с данными контракта (GetContractDocumentResponseDict).
         """
         response = self.get_contract_document_api(account_id)
         return response.json()
