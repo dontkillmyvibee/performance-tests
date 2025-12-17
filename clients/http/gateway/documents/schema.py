@@ -1,25 +1,39 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, HttpUrl
 
 
-class TariffDocumentSchema(BaseModel):
+class DocumentsBaseModel(BaseModel):
     """
-    Схема документа тарифа, возвращаемого сервисом documents.
+    Базовая модель для схем documents.
+
+    populate_by_name=True позволяет принимать данные как по имени поля,
+    так и по алиасу (если он будет добавлен через Field(alias=...)).
     """
 
-    url: str
+    model_config = ConfigDict(populate_by_name=True)
+
+
+class DocumentSchema(DocumentsBaseModel):
+    """
+    Универсальная схема документа, возвращаемого сервисом documents.
+    """
+
+    url: HttpUrl
     document: str
 
 
-class ContractDocumentSchema(BaseModel):
+class TariffDocumentSchema(DocumentSchema):
     """
-    Схема документа контракта, возвращаемого сервисом documents.
+    Документ тарифа.
     """
 
-    url: str
-    document: str
+
+class ContractDocumentSchema(DocumentSchema):
+    """
+    Документ контракта.
+    """
 
 
-class GetTariffDocumentResponseSchema(BaseModel):
+class GetTariffDocumentResponseSchema(DocumentsBaseModel):
     """
     Схема ответа на получение документа тарифа по счёту.
     """
@@ -27,7 +41,7 @@ class GetTariffDocumentResponseSchema(BaseModel):
     tariff: TariffDocumentSchema
 
 
-class GetContractDocumentResponseSchema(BaseModel):
+class GetContractDocumentResponseSchema(DocumentsBaseModel):
     """
     Схема ответа на получение документа контракта по счёту.
     """
