@@ -1,9 +1,8 @@
-from __future__ import annotations
-
 from datetime import datetime
 from enum import StrEnum
 
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl
+from tools.fakers import fake
 
 
 class OperationType(StrEnum):
@@ -101,8 +100,8 @@ class MakeOperationRequestSchema(OperationsBaseModel):
     Базовая структура тела запроса для создания операции.
     """
 
-    status: OperationStatus
-    amount: float
+    status: OperationStatus = Field(default_factory=lambda: fake.enum(OperationStatus))
+    amount: float = Field(default_factory=fake.amount)
     card_id: str = Field(alias="cardId")
     account_id: str = Field(alias="accountId")
 
@@ -136,7 +135,7 @@ class MakePurchaseOperationRequestSchema(MakeOperationRequestSchema):
     Тело запроса для создания операции покупки.
     """
 
-    category: str
+    category: str = Field(default_factory=fake.category)
 
 
 class MakeBillPaymentOperationRequestSchema(MakeOperationRequestSchema):
