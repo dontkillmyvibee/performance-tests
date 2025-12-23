@@ -26,7 +26,7 @@ create_user_request = CreateUserRequest(
     last_name=fake.last_name(),
     first_name=fake.first_name(),
     middle_name=fake.middle_name(),
-    phone_number=fake.phone_number(),
+    phone_number=fake.phone_number()
 )
 
 create_user_response: CreateUserResponse = users_gateway_service.CreateUser(
