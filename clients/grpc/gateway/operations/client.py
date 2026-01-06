@@ -1,7 +1,8 @@
 from grpc import Channel
+from locust.env import Environment
 
 from clients.grpc.client import GRPCClient
-from clients.grpc.gateway.client import build_gateway_grpc_client
+from clients.grpc.gateway.client import build_gateway_grpc_client, build_gateway_locust_grpc_client
 from contracts.services.gateway.operations.operations_gateway_service_pb2_grpc import OperationsGatewayServiceStub
 from contracts.services.operations.operation_pb2 import OperationStatus
 from tools.fakers import fake
@@ -151,7 +152,8 @@ class OperationsGatewayGRPCClient(GRPCClient):
         """
         return self.stub.MakePurchaseOperation(request)
 
-    def make_bill_payment_operation_api(self, request: MakeBillPaymentOperationRequest) -> MakeBillPaymentOperationResponse:
+    def make_bill_payment_operation_api(self,
+                                        request: MakeBillPaymentOperationRequest) -> MakeBillPaymentOperationResponse:
         """
         Низкоуровневый вызов MakeBillPaymentOperation.
 
@@ -160,7 +162,8 @@ class OperationsGatewayGRPCClient(GRPCClient):
         """
         return self.stub.MakeBillPaymentOperation(request)
 
-    def make_cash_withdrawal_operation_api(self, request: MakeCashWithdrawalOperationRequest) -> MakeCashWithdrawalOperationResponse:
+    def make_cash_withdrawal_operation_api(self,
+                                           request: MakeCashWithdrawalOperationRequest) -> MakeCashWithdrawalOperationResponse:
         """
         Низкоуровневый вызов MakeCashWithdrawalOperation.
 
@@ -333,3 +336,12 @@ def build_operations_gateway_grpc_client() -> OperationsGatewayGRPCClient:
     """
     return OperationsGatewayGRPCClient(channel=build_gateway_grpc_client())
 
+
+def build_operations_gateway_locust_grpc_client(environment: Environment) -> OperationsGatewayGRPCClient:
+    """
+    Фабрика для создания экземпляра OperationsGatewayGRPCClient для Locust.
+
+    :param environment: Окружение Locust для сбора метрик.
+    :return: Инициализированный клиент для OperationsGatewayService.
+    """
+    return OperationsGatewayGRPCClient(channel=build_gateway_locust_grpc_client(environment))
